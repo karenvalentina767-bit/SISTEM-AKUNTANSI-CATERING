@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karsa — Akuntansi Catering Event</title>
+    <meta
+      name="description"
+      content="Sistem akuntansi penjualan dan booking catering event."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/katalog.css" />
+    <link rel="icon" type="image/svg+xml" href="./img/logo.svg" />
+  </head>
+  <body>
+    <div id="configBanner" class="config-banner is-hidden"></div>
+
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">K</div>
+          <div>
+            <strong>Karsa</strong>
+            <span>Catering finance</span>
+          </div>
+        </div>
+
+        <div class="nav-label">Workspace</div>
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <button class="nav-item is-active" data-tab="dashboard">
+            <span class="nav-icon">01</span>
+            <span>Ringkasan</span>
+          </button>
+          <button class="nav-item" data-tab="booking">
+            <span class="nav-icon">02</span>
+            <span>Booking baru</span>
+          </button>
+          <button class="nav-item" data-tab="invoices">
+            <span class="nav-icon">03</span>
+            <span>Invoice &amp; pembayaran</span>
+          </button>
+          <button class="nav-item" data-tab="catalog">
+            <span class="nav-icon">04</span>
+            <span>Katalog paket</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <strong>Hari ini</strong>
+          <span id="sidebarDate"></span>
+          <small>Data keuangan tersimpan di Supabase.</small>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow">KARSA / <span id="currentArea">RINGKASAN</span></div>
+            <h1 id="pageHeading">Financial cockpit</h1>
+          </div>
+          <div class="date-chip" id="topbarDate"></div>
+        </header>
+
+        <div class="mobile-tabs">
+          <button class="mobile-tab is-active" data-tab="dashboard">Ringkasan</button>
+          <button class="mobile-tab" data-tab="booking">Booking</button>
+          <button class="mobile-tab" data-tab="invoices">Invoice</button>
+          <button class="mobile-tab" data-tab="catalog">Katalog</button>
+        </div>
+
+        <section class="view is-active" id="dashboardView" data-view="dashboard">
+          <div class="page-intro">
+            <div>
+              <div class="eyebrow">SELAMAT DATANG KEMBALI</div>
+              <h2 class="page-title">Tahu posisi kas,<br /><span>tahu langkah berikutnya.</span></h2>
+              <p class="page-subtitle">
+                Satu pandangan untuk event yang akan datang, pemasukan, dan tagihan yang perlu ditindaklanjuti.
+              </p>
+            </div>
+            <button class="button button-primary" data-tab="booking">+ Catat booking</button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-label">Revenue terbayar</div>
+              <div class="stat-value" id="paidRevenue">Rp 0</div>
+              <div class="stat-note"><b>Cash in</b> dari invoice lunas</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Piutang berjalan</div>
+              <div class="stat-value" id="outstandingReceivables">Rp 0</div>
+              <div class="stat-note"><b id="outstandingCount">0 invoice</b> menunggu pembayaran</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Event terjadwal</div>
+              <div class="stat-value" id="scheduledEvents">0</div>
+              <div class="stat-note">Booking aktif di kalender</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Invoice lunas</div>
+              <div class="stat-value" id="paidCount">0</div>
+              <div class="stat-note"><b id="paidShare">0%</b> tingkat penyelesaian</div>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Event terdekat</h3>
+                  <p>Agenda operasional yang perlu disiapkan</p>
+                </div>
+                <span class="panel-code">AGENDA</span>
+              </div>
+              <div id="upcomingEvents" class="event-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Status tagihan</h3>
+                  <p>Snapshot arus penerimaan</p>
+                </div>
+                <span class="panel-code">CASHFLOW</span>
+              </div>
+              <div class="cashflow">
+                <div class="cashflow-line">
+                  <span>Sudah diterima</span>
+                  <strong class="positive" id="cashReceived">Rp 0</strong>
+                </div>
+                <div class="cashflow-line">
+                  <span>Belum diterima</span>
+                  <strong class="warning" id="cashOutstanding">Rp 0</strong>
+                </div>
+                <div class="progress"><span id="paymentProgress"></span></div>
+                <div class="progress-labels">
+                  <span id="paidProgressLabel">0 lunas</span>
+                  <span id="unpaidProgressLabel">0 outstanding</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="bookingView" data-view="booking">
+          <div class="page-intro">
+            <div>
+              <div class="eyebrow">SALES ENTRY</div>
+              <h2 class="page-title">Catat booking baru.</h2>
+              <p class="page-subtitle">Satu input membuat customer, event, dan invoice tercatat bersamaan.</p>
+            </div>
+          </div>
+
+          <form id="bookingForm" class="panel form-panel">
+            <div class="form-section">
+              <div class="section-title"><span>01</span><div><h3>Data customer</h3><p>Siapa yang memesan layanan catering?</p></div></div>
+              <div class="form-grid">
+                <label>Nama customer <b>*</b><input required name="customerName" placeholder="Contoh: Naya Prameswari" /></label>
+                <label>Nomor telepon <b>*</b><input required name="phone" placeholder="+62 812 3456 7890" /></label>
+                <label class="full">Email <small>(opsional)</small><input type="email" name="email" placeholder="nama@perusahaan.com" /></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="section-title"><span>02</span><div><h3>Detail event</h3><p>Tentukan jadwal dan paket yang dipesan.</p></div></div>
+              <div class="form-grid">
+                <label class="full">Nama event <b>*</b><input required name="eventName" placeholder="Contoh: Resepsi Pernikahan Dinda & Arif" /></label>
+                <label>Tanggal event <b>*</b><input required type="date" name="eventDate" /></label>
+                <label>Jenis paket <b>*</b><input required name="packageType" placeholder="Contoh: Prasmanan Nusantara" /></label>
+                <label>Jumlah pax <b>*</b><input required min="1" type="number" name="pax" placeholder="150" /></label>
+                <label>Harga per pax <b>*</b><input required min="0" type="number" name="pricePerPax" placeholder="125000" /></label>
+              </div>
+              <div id="packagePicker" class="package-picker"></div>
+            </div>
+            <div class="form-section">
+              <div class="section-title"><span>03</span><div><h3>Penagihan</h3><p>Atur periode billing dan jatuh tempo invoice.</p></div></div>
+              <div class="form-grid">
+                <label>Tanggal billing <b>*</b><input required type="date" name="billingDate" /></label>
+                <label>Jatuh tempo <b>*</b><input required type="date" name="dueDate" /></label>
+              </div>
+              <div class="estimate"><span>Estimasi total invoice (termasuk PPN 11%)</span><strong id="estimatedTotal">Rp 0</strong></div>
+            </div>
+            <div class="form-footer">
+              <p id="bookingMessage">Invoice akan dibuat otomatis setelah disimpan.</p>
+              <button class="button button-secondary" type="reset">Bersihkan</button>
+              <button class="button button-primary" type="submit">Simpan booking</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="view" id="invoicesView" data-view="invoices">
+          <div class="page-intro">
+            <div>
+              <div class="eyebrow">RECEIVABLES CONTROL</div>
+              <h2 class="page-title">Invoice &amp; pembayaran.</h2>
+              <p class="page-subtitle">Cari invoice, lihat jatuh tempo, dan tandai penerimaan tanpa kehilangan konteks event.</p>
+            </div>
+          </div>
+          <section class="panel">
+            <div class="toolbar">
+              <input id="invoiceSearch" class="search-input" type="search" placeholder="Cari invoice, customer, atau event..." />
+              <select id="invoiceFilter" class="select">
+                <option value="all">Semua status</option>
+                <option value="unpaid">Belum lunas</option>
+                <option value="paid">Lunas</option>
+              </select>
+              <span id="invoiceCount" class="invoice-count">0 invoice</span>
+            </div>
+            <div id="invoiceMessage" class="inline-message is-hidden"></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Invoice</th><th>Customer / event</th><th>Tanggal event</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="invoiceRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="catalogView" data-view="catalog">
+          <div class="page-intro">
+            <div>
+              <div class="eyebrow">MENU &amp; PAKET</div>
+              <h2 class="page-title">Katalog paket catering.</h2>
+              <p class="page-subtitle">Pilih paket sesuai acara. Harga per pax langsung terisi di form booking.</p>
+            </div>
+          </div>
+          <div id="catalogGrid" class="catalog-grid"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="editDialog" class="edit-dialog">
+      <form id="editForm" class="panel form-panel">
+        <div class="form-section">
+          <div class="section-title"><span>✎</span><div><h3>Edit booking</h3><p>Perbarui data event dan tagihan.</p></div></div>
+          <div class="form-grid">
+            <label class="full">Nama event <b>*</b><input required name="eventName" /></label>
+            <label>Tanggal event <b>*</b><input required type="date" name="eventDate" /></label>
+            <label>Jenis paket <b>*</b><input required name="packageType" /></label>
+            <label>Jumlah pax <b>*</b><input required min="1" type="number" name="pax" /></label>
+            <label>Harga per pax <b>*</b><input required min="0" type="number" name="pricePerPax" /></label>
+            <label>Status bayar <b>*</b>
+              <select required name="statusBayar">
+                <option value="Belum Lunas">Belum Lunas</option>
+                <option value="Lunas">Lunas</option>
+              </select>
+            </label>
+            <label>Tanggal billing <b>*</b><input required type="date" name="billingDate" /></label>
+            <label>Jatuh tempo <b>*</b><input required type="date" name="dueDate" /></label>
+          </div>
+          <div class="estimate"><span>Estimasi total invoice (termasuk PPN 11%)</span><strong id="editEstimatedTotal">Rp 0</strong></div>
+        </div>
+        <div class="form-footer">
+          <p id="editMessage"></p>
+          <button class="button button-secondary" type="button" id="editCancelButton">Batal</button>
+          <button class="button button-primary" type="submit">Simpan perubahan</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../backend/app.js"></script>
+    <script src="./js/app.js"></script>
+    <script src="./js/catalog.js"></script>
+  </body>
+</html>

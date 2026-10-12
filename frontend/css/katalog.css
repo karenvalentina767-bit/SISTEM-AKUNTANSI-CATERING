@@ -1,0 +1,47 @@
+/* Tambahan: logo, header, dan katalog paket */
+
+/* Logo Karsa */
+.brand-mark { background: url("../img/logo.svg") center / cover; border-radius: 11px; font-size: 0; }
+
+/* Header */
+.topbar { background: #fffefb; border-bottom: 3px solid var(--terracotta); }
+
+/* Banner bergambar di halaman Ringkasan */
+#dashboardView .page-intro {
+  padding: 36px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(23, 61, 58, .95) 40%, rgba(23, 61, 58, .35)), url("../img/katalog/prasmanan.jpg") center / cover;
+  color: #fff;
+}
+#dashboardView .page-intro .eyebrow { color: #ffcdbd; }
+#dashboardView .page-intro .page-title { color: #fff; }
+#dashboardView .page-intro .page-title span { color: #ffb59f; }
+#dashboardView .page-intro .page-subtitle { color: #dce9e4; }
+#dashboardView .page-intro .button-primary { background: var(--terracotta); }
+
+/* Halaman katalog */
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.package-card { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+.package-card img { display: block; width: 100%; height: 170px; object-fit: cover; }
+.package-body { padding: 16px; }
+.package-category { color: var(--terracotta); font: 10px "Space Mono"; text-transform: uppercase; letter-spacing: .08em; }
+.package-body h3 { margin: 4px 0 10px; font-size: 15px; }
+.package-body ul { margin: 0 0 14px; padding-left: 18px; color: var(--muted); font-size: 12px; }
+.package-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+.package-footer strong { color: var(--teal); font: 700 15px "Space Mono"; }
+.package-footer small { display: block; }
+
+/* Pilihan paket di form booking */
+.package-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 17px; }
+.picker-card { display: grid; gap: 2px; padding: 0 0 9px; overflow: hidden; border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); text-align: left; }
+.picker-card img { width: 100%; height: 80px; object-fit: cover; margin-bottom: 6px; }
+.picker-card strong, .picker-card span { padding: 0 10px; font-size: 11px; }
+.picker-card span { color: var(--muted); }
+.picker-card:hover { border-color: #b8cfc9; }
+.picker-card.is-selected { border-color: var(--teal); background: #eef7f4; }
+
+@media (max-width: 680px) {
+  .mobile-tabs { grid-template-columns: repeat(4, 1fr); }
+  #dashboardView .page-intro { padding: 24px 20px; }
+  .package-picker { grid-template-columns: repeat(2, 1fr); }
+}
