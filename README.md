@@ -84,3 +84,9 @@ npx serve .
 
 `backend/schema.sql` menonaktifkan RLS untuk kebutuhan testing/tugas. Sebelum dipakai
 publik, aktifkan kembali RLS dan buat policy yang sesuai.
+
+Demo web: [Buka Sistem Invoice Catering](https://karenvalentina767-bit.github.io/SISTEM-AKUNTANSI-CATERING/)
+
+
+> Demo ini dihosting publik lewat GitHub Pages. Data disimpan di Supabase.
+
