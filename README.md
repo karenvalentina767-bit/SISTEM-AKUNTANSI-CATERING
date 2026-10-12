@@ -90,3 +90,9 @@ Demo web: [Buka Sistem Invoice Catering](https://karenvalentina767-bit.github.io
 
 > Demo ini dihosting publik lewat GitHub Pages. Data disimpan di Supabase.
 
+
+Demo web: [Buka Sistem Invoice Catering](https://karenvalentina767-bit.github.io/SISTEM-AKUNTANSI-CATERING/)
+
+
+> Demo ini dihosting publik lewat GitHub Pages. Data disimpan di Supabase.
+
